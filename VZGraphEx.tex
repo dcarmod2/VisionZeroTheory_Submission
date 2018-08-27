@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,graphicx,enumerate,url,color,float,amsfonts}
+\usepackage[noadjust]{cite}
+\usepackage{filecontents}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,positioning,calc,fit}
+\usepackage[mathscr]{eucal}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+\usepackage{psfrag}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{url}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[graphics,tightpage,active]{preview}
+
+\PreviewEnvironment{tikzpicture}
+\PreviewEnvironment{equation}
+\PreviewEnvironment{equation*}
+\newlength{\imagewidth}
+\newlength{\imagescale}
+\pagestyle{empty}
+\thispagestyle{empty}
+
+
+\newcommand{\Time}{\mathbf{T}}
+\newcommand{\Accidents}{\mathbf{A}}
+\newcommand{\Length}{\boldsymbol{\ell}}
+\newcommand{\Energy}{\mathbf{E}}
+
+\begin{document}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+                    semithick]
+  
+
+  \node[state] (A)                    {$A$};
+  \node[state]         (B) [above right of=A] {$B$};
+  \node[state]         (C) [below right of=A] {$C$};
+  \node[state]         (D) [right =2.81cm of B] {$D$};
+  
+  \tikzstyle{every state}=[fill=white,draw=none,text=black]
+  
+  \path (A) edge            node {$\Accidents = 51$, $\Length = 10$} (B)
+            edge            node [left]{$\Accidents = 49$, $\Length = 10$} (C)
+        (B) edge            node [below]{$\Accidents = 10$, $\Length = 10$}(D)
+        (C) edge            node [right]{$\Accidents = 51$, $\Length = 10$}(B);
+        
+            
+        
+\end{tikzpicture}
+
+\end{document}
+
