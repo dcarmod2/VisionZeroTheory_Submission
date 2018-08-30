@@ -18,5 +18,5 @@ Finally, to make plots, one need simply run the corresponding jupyter notebook. 
 
 Other important files:
 
-* RandWeekDays.py - this was the file used to randomly sample the travel_times_<year> files stored in the illinois databse.
+* RandWeekdays.py - this was the file used to randomly sample the travel_times_<year> files stored in the illinois databse.
 * FINAL_Manhattan_<name>/windower.py These files define the desired time window for the data and are read in the main program.
