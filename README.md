@@ -15,3 +15,8 @@ We found that the easiest way to install a working version of osmnx was using th
 The data files in the repository are currently blank to allow for a lightweight repository. To begin, download the datafiles into the DATA_... folders from <insert url>. At this point, using runHours.sh should generate all of the data and move it into the correct folders. This is just a shell script to run MAIN_main_vehmi.py several times with varying configuration options. Note that this command will simultaneously use up to 10 processors on your system, and is the computationally intensive part of the package.
   
 Finally, to make plots, one need simply run the corresponding jupyter notebook. The python files MAIN_makeplots*.py serve as the engine for generating the graphs, and are run via the notebooks. 
+
+Other important files:
+
+* RandWeekDays.py - this was the file used to randomly sample the travel_times_<year> files stored in the illinois databse.
+* FINAL_Manhattan_<name>/windower.py These files define the desired time window for the data and are read in the main program.
