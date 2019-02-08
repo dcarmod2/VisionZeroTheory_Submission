@@ -25,26 +25,26 @@ class tradeoff:
             self.normalizedData[alpha]=normalizedFrame
 
     def curve(self):
-        points=pandas.DataFrame(numpy.nan,index=self.alphaList,columns=["rel_time","rel_length"])
+        points=pandas.DataFrame(numpy.nan,index=self.alphaList,columns=["rel_APM","rel_trips"])
         for n,alpha in enumerate(self.alphaList):
             frame=self.normalizedData[alpha]
             # allow for trip multiplicity. 
             # remove nan's in either trip_time or trip_APM
             flags= ~ (numpy.isnan(frame["trip_time"]) | numpy.isnan(frame["trip_APVM"]))
             multiplicity=frame["multiplicity"].multiply(flags)
-            time_=frame["trip_time"].multiply(multiplicity)
+            trips_=frame["trip_num_trips"].multiply(multiplicity)
             apm_=frame["trip_APM"].multiply(multiplicity)
-            length_=frame["trip_length"].multiply(multiplicity)
-            time_mean=time_.sum()/multiplicity.sum()
-            length_mean=length_.sum()/multiplicity.sum()
-            points.at[alpha,["rel_time","rel_length"]]=(time_mean,length_mean)
+            apvm_=frame["trip_APVM"].multiply(multiplicity)
+            trips_mean=trips_.sum()/multiplicity.sum()
+            apm_mean=apm_.sum()/multiplicity.sum()
+            points.at[alpha,["rel_APM","rel_trips"]]=(apm_mean,trips_mean)
 
         return points
 
     def avoidancePoints(self):
         lastAlpha=self.alphaList[-1]
         avoidance_frame=self.normalizedData[lastAlpha] #limit as alpha->1
-        return avoidance_frame.loc[:,["trip_time","trip_length"]]
+        return avoidance_frame.loc[:,["trip_time","trip_APVM"]]
 
 if __name__ == '__main__':
     print("INITIALIZING")
@@ -65,7 +65,7 @@ if __name__ == '__main__':
     points=Tradeoff.curve()
     #print(points)
 
-    xvals=points["rel_time"]
+    xvals=points["rel_trips"]
     yvals=points["rel_APVM"]
     
     globavg = globavg/Tradeoff.risk
@@ -75,8 +75,8 @@ if __name__ == '__main__':
     plotter.plot(xvals,yvals,color="red",label="Evening Morning")
     plotter.plot(avgxvals,avgyvals,color="blue",label="Global Average")
     plotter.xlim(1,max(xvals))
-    plotter.title("Tradeoff of change in accidents/vehiclemeter and trip time")
-    plotter.xlabel("relative trip time")
+    plotter.title("Tradeoff of change in risk and number of trips taken")
+    plotter.xlabel("relative \# trips")
     plotter.ylabel("relative accidents/vehiclemeter")
     plotter.legend()
     plotter.savefig("TEMP/windower.py".replace("windower.py","curve.png"),bbox_inches='tight')

@@ -242,9 +242,9 @@ if __name__ == '__main__':
 	statslogger.log(str((toc-tic)/60)+" minutes")
 
 	outDict={alpha:frame for (alpha,frame) in Frames}
-	tot_trips = len(outDict[0])
-	nan_trips = len(outDict[0][numpy.isnan(outDict[0]['trip_time'])])
-	df = outDict[0].copy()
+	tot_trips = len(outDict[alphaList[0]])
+	nan_trips = len(outDict[alphaList[0]][numpy.isnan(outDict[alphaList[0]]['trip_time'])])
+	df = outDict[alphaList[0]].copy()
 	df = df[~ numpy.isnan(df['trip_time'])]
 	num_trips_avg = numpy.nanmean(df['trip_num_trips'])
 

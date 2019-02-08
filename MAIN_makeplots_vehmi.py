@@ -16,7 +16,7 @@ class tradeoff:
     def __init__(self,data):
         self.data=data
         self.alphaList=sorted(self.data.keys())
-        normalizer=self.data[0]
+        normalizer=self.data[self.alphaList[0]]
         self.normalizedData={}
         self.risk = normalizer["trip_APVM"].mean()
         for (alpha,frame) in self.data.items():
