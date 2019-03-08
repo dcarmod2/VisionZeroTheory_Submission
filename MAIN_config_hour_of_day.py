@@ -34,17 +34,17 @@ accident_HTML=outdir+"accidents.html"
 origins_HTML=outdir+"origins.html"
 destinations_HTML=outdir+"destinations.html"
 
-alphaList=numpy.arange(0,1,step=0.1)
+alphaList=numpy.array([0.01,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.99])
 
 dirnames=[#"", #current directory
-	"FINAL_Manhattan_All",
-	"FINAL_Manhattan_EveningMorning",
-	"FINAL_Manhattan_Morning_RushHour",
-	"FINAL_Manhattan_Midday",
-	"FINAL_Manhattan_Evening_RushHour",
-    "FINAL_Manhattan_PartyHours",
-    "FINAL_Manhattan_Night"]
-
+	"FINAL_All",
+	"FINAL_EveningMorning",
+	"FINAL_Morning_RushHour",
+	"FINAL_Midday",
+	"FINAL_Evening_RushHour",
+    "FINAL_PartyHours",
+    "FINAL_Night"
+]
 def windower(d=0):
 	global dirname
 	try:
