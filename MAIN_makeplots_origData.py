@@ -16,10 +16,10 @@ class tradeoff:
     def __init__(self,data):
         self.data=data
         self.alphaList=sorted(self.data.keys())
-        self.normalizer=self.data[self.alphaList[0]]
+        normalizer=self.data[self.alphaList[0]]
         self.normalizedData={}
         for (alpha,frame) in self.data.items():
-            normalizedFrame=frame.divide(self.normalizer)
+            normalizedFrame=frame.divide(normalizer)
             normalizedFrame["multiplicity"]=frame["multiplicity"]
             self.normalizedData[alpha]=normalizedFrame
 
@@ -54,13 +54,6 @@ class tradeoff:
         lastAlpha=self.alphaList[-1]
         avoidance_frame=self.normalizedData[lastAlpha] #limit as alpha->1
         return avoidance_frame.loc[:,["trip_time","trip_APM"]]
-    
-    def getPoints(self,alpha):
-        frame = self.normalizedData[alpha]
-        return frame.loc[:,["trip_time","trip_APM"]]
-    
-    def firstPoints(self):
-        return self.normalizer.loc[:,["trip_time","trip_APM"]]
 
 if __name__ == '__main__':
     print("INITIALIZING")
