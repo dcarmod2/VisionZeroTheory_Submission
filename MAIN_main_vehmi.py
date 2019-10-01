@@ -15,6 +15,28 @@ import itertools
 import pickle
 from operator import itemgetter
 
+class AddTuple(tuple):
+	def __add__(self,other):
+		return AddTuple(x + y for x, y in zip(self, other))
+	def __rmul__(self,other):
+		return AddTuple(other * x for x in self)
+	def __radd__(self,other):
+		if other == 0:
+			return self
+		else:
+			raise ValueError('Tried to add non-zero integer to tuple')
+	def __lt__(self,other):
+		if other == 0:
+			return False
+		else:
+			return super().__lt__(other)
+
+	def __gt__(self,other):
+		if other == 0:
+			return True
+		else:
+			return super().__gt__(other)
+
 class logger:
 	def __init__(self,fname):
 		self.cr=""
@@ -31,12 +53,30 @@ class pathManager:
 
 	def __init__(self,alpha,G):
 		self.ctr=0
-		
+		self.alpha = alpha
 		self.G=G.copy()
-		networkx.set_edge_attributes(self.G,numpy.inf,"cost")
-		for edge in self.G.edges:
-			#print(begin,end)
-			self.G.edges[edge]["cost"]=(1-alpha)*self.G.edges[edge]["time"]+alpha*self.G.edges[edge]["accidents"]
+		
+		if 0.001 < self.alpha < .999:
+			networkx.set_edge_attributes(self.G,numpy.inf,"cost")
+			for edge in self.G.edges:
+				#print(begin,end)
+				self.G.edges[edge]["cost"]=(1-alpha)*self.G.edges[edge]["time"]+alpha*self.G.edges[edge]["accidents"]
+		elif 0.999 < self.alpha:
+			networkx.set_edge_attributes(self.G,AddTuple((numpy.inf,numpy.inf)),"cost")
+			for edge in self.G.edges:
+				self.G.edges[edge]["cost"] = AddTuple((self.G.edges[edge]["accidents"],self.G.edges[edge]["time"]))
+
+		elif 0.001 > self.alpha:
+			networkx.set_edge_attributes(self.G,AddTuple((numpy.inf,numpy.inf)),"cost")	   
+			for edge in self.G.edges:
+				self.G.edges[edge]["cost"] = AddTuple((self.G.edges[edge]["time"],self.G.edges[edge]["accidents"]))
+				
+		def badness_test(edge):
+			#use numpy functions to handle both numeric costs and tuple costs.
+			return numpy.any(numpy.isinf(self.G.edges[edge]["cost"]))
+
+		bad_edges = [edge for edge in self.G.edges if badness_test(edge)]
+		self.G.remove_edges_from(bad_edges)
 
 	def path_cost(self,path,attribute):
 		# compute the cost along a path
@@ -87,6 +127,7 @@ class pathManager:
 			triptime,_,_,_,_=out
 			#before outputting, memo-ize, if finite trip
 		except Exception as e:
+			#print(e.args)
 			pass
 		return out
 
@@ -133,7 +174,7 @@ if __name__ == '__main__':
 	statslogger.log(windower.name)
 
 	print("INITIALIZING GRAPH")
-	osmnx.config(log_file=True, log_console=True, use_cache=True)
+	osmnx.config(log_file=True, log_console=False, use_cache=True)
 	G_raw = osmnx.graph_from_place('Manhattan Island, New York, USA', network_type='drive')
 	G=networkx.DiGraph(G_raw.copy())
 
