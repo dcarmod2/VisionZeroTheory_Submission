@@ -1,6 +1,6 @@
 Copyright 2018 University of Illinois Board of Trustees. All Rights Reserved. Licensed under the MIT license.
 
-This is the code used to generate the plots and data for the submitted version of the paper.
+This is the code used to generate the plots and data for the submitted version of the paper: https://www.sciencedirect.com/science/article/pii/S0968090X18316309
 
 Software versions (determined with "conda list" utility):
 
